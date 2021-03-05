@@ -1,0 +1,25 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimnguyen220/Employee-Tracker.git"
+  },
+  "author": "Jim Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jimnguyen220/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/jimnguyen220/Employee-Tracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.0.0",
+    "mysql": "^2.18.1"
+  }
+}
