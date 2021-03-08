@@ -112,29 +112,53 @@ function createEmployee() {
         },
         {
             type: "list",
-            name: "department",
+            name: "role",
             message: "Which department will the employee work in",
-            choices: ["Sales", "Engineering", "Finance", "Legal"]
+            choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Accountant", "Legal Team Lead", "Lawyer"]
         },
     ]).then((data) => {
-        console.log(data);
 
-        //The code below does not work
+        let roleid;
+
+        switch(data.role) {
+            case "Sales Lead":
+                roleid = 1;
+                break;
+            case "Salesperson" :
+                roleid = 2;
+                break;
+            case "Lead Engineer" :
+                roleid = 3;
+                break;
+            case "Software Engineer" :
+                roleid = 4;
+                break;
+            case "Accountant" :
+                roleid = 5;
+                break;
+            case "Legal Team Lead" :
+                roleid = 6;
+                break;
+            case "Lawyer" :
+                roleid = 7;
+                break;
+        }
+   
         var query = connection.query(
             "INSERT INTO employee SET ?",
             {   
-                id: `"${data.id}"`,
-                first_name: `"${data.first}"`,
-                last_name: `"${data.last}"`,
+                id: `${data.id}`,
+                first_name: `${data.first}`,
+                last_name: `${data.last}`,
+                role_id: `${roleid}`
             },
             function (err, res) {
                 if (err) throw err;
-                console.log(res.affectedRows);
-                // updateEmployee();
+                console.log("Employee Added!");
+                startInquirer();
             }
-        );
+        )       
     })
-
 }
 
 // function updateEmployee() {
