@@ -2,7 +2,7 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-// const startInquirer = require('./routes/inquirer');
+
 
 
 
@@ -26,6 +26,7 @@ connection.connect((err)=>{
 
 
 /////////////////////////////////////////////////////
+
 function startInquirer () {
     inquirer.prompt([
         {
@@ -46,13 +47,19 @@ function startInquirer () {
     })
 };
 
+///////////////////////////////////////////////////////
+
 function showTeam () {
     let query =  
-    "SELECT employee.first_name, employee.last_name, department.department_name, role.title, role.salary FROM employee INNER JOIN role ON employee.role_id = role.role_id INNER JOIN department ON role.department_id = department.department_id";
+    "SELECT employee.id, employee.first_name, employee.last_name, department.department_name, role.title, role.salary FROM employee INNER JOIN role ON employee.role_id = role.role_id INNER JOIN department ON role.department_id = department.department_id";
 
     connection.query(query, function (err, res){
         if (err) throw err;
         // console.log(res);
-        console.table(res);
+        console.table('Company Employees', res);
+        startInquirer();
     })
-}
+};
+
+////////////////////////////////////////////////////////
+
