@@ -52,8 +52,7 @@ function showTeam () {
 
     connection.query(query, function (err, res){
         if (err) throw err;
-        console.log(res);
-        const table = cTable.getTable([res]);
-        console.log(table);
+        // console.log(res);
+        console.table(res);
     })
 }
