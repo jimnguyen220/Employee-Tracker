@@ -33,7 +33,7 @@ function startInquirer () {
         type: "list",
         name: "prompt",
         message: "What would you like to do?",
-        choices: ["Display All Employees", "Display Employees by Department", "Display Employees by Manager", "Add a Team Member", "Delete Team Member"]
+        choices: ["Display All Employees", "Display Employees by Department", "Display Employees by Manager", "Add an Employee", "Update an Employee", "Remove Employee"]
         },
 
     ]).then((data) => {
@@ -49,23 +49,19 @@ function startInquirer () {
                 }
             ]).then((response) => {
                 let department = response.department;
-                if (department === "Sales") {
-                    showDepartment(department);
-                } else if (department === "Engineering") {
-                    showDepartment(department);
-                } else if (department === "Finance") {
-                    showDepartment(department);
-                } else if (department === "Legal") {
-                    showDepartment(department);
-                } 
+                showDepartment(department);
             })
 
         } else if (data.prompt === "Display Employees by Manager") {
 
-        } else if (data.prompt === "Delete Team Member") {
+        } else if (data.prompt === "Add an Employee") {
 
-        } else if (data.prompt === "Add a Team Member") {
+        } else if (data.prompt === "Update an Employee") {
         
+        } else if (data.prompt === "Remove Employee") {
+        
+        } else {
+
         }
         
     })
