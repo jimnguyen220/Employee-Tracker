@@ -48,7 +48,7 @@ function startInquirer () {
 
 function showTeam () {
     let query =  
-        "SELECT employee.first_name, employee.last_name, department.name, role.title, role.salary FROM employee INNER JOIN role ON employee.role_id = role.role_id INNER JOIN department ON role.department_id = department.department_id";
+    "SELECT employee.first_name, employee.last_name, department.department_name, role.title, role.salary FROM employee INNER JOIN role ON employee.role_id = role.role_id INNER JOIN department ON role.department_id = department.department_id";
 
     connection.query(query, function (err, res){
         if (err) throw err;
