@@ -47,7 +47,7 @@ function startInquirer () {
             createEmployee();
 
         } else if (data.prompt === "Update an Employee") {
-        
+            employeeName();
         } else if (data.prompt === "Remove Employee") {
         
         } else {
@@ -56,7 +56,7 @@ function startInquirer () {
         
     })
 };
-///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 
 function showTeam () {
     let sql =  
@@ -91,7 +91,9 @@ function showDepartment () {
         })
     })
 };
-////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 function createEmployee() {
     inquirer.prompt([
@@ -144,7 +146,7 @@ function createEmployee() {
                 break;
         }
    
-        var query = connection.query(
+        const query = connection.query(
             "INSERT INTO employee SET ?",
             {   
                 id: `${data.id}`,
@@ -154,20 +156,89 @@ function createEmployee() {
             },
             function (err, res) {
                 if (err) throw err;
-                console.log("Employee Added!");
+                console.log(res.affectedRows + " Employee Added!");
                 startInquirer();
             }
         )       
     })
+};
+
+//////////////////////////////////////////////////////////////////////////////////////
+function employeeName () {
+    let sql =  
+    `SELECT id, first_name, last_name FROM employee`;
+
+    connection.query(sql, function (err, res){
+        if (err) throw err;
+        // console.log(res);        
+        const nameArray = [];
+        for (let i = 0; i < res.length; i++) {
+            nameArray.push(res[i].first_name +" "+res[i].last_name)
+        }
+        updateEmployee(nameArray);
+    })
 }
 
-// function updateEmployee() {
-//     var query = connection.query(
-//         "UPDATE employee SET ? WHERE ?",
-//         [
-//             {
 
-//             }
-//         ]
-//     )
-// };
+function updateEmployee(nameArray) {
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "name",
+            message: "Which Employee would you like to update?",
+            choices: nameArray
+        },
+        {
+            type: "list",
+            name: "role",
+            message: "What is that employees new role?",
+            choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Accountant", "Legal Team Lead", "Lawyer"]
+        }
+    ]).then((data) =>{
+        console.log(data.name);
+        
+        let roleid;
+
+        switch(data.role) {
+            case "Sales Lead":
+                roleid = 1;
+                break;
+            case "Salesperson" :
+                roleid = 2;
+                break;
+            case "Lead Engineer" :
+                roleid = 3;
+                break;
+            case "Software Engineer" :
+                roleid = 4;
+                break;
+            case "Accountant" :
+                roleid = 5;
+                break;
+            case "Legal Team Lead" :
+                roleid = 6;
+                break;
+            case "Lawyer" :
+                roleid = 7;
+                break;
+        }
+
+        console.log(roleid);
+        // const query = connection.query(
+        //     "UPDATE employee SET ? WHERE ?",
+        //     [
+        //         {
+        //             role_id: `${roleid}`
+        //         },
+        //         {
+        //             id: `${data.name}`
+        //         }
+        //     ],
+        //     function (err, res) {
+        //         if (err) throw err;
+        //         console.log(res.affectedRows + " updated")
+        //     }
+        // )
+    
+    })
+};
