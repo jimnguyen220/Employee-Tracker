@@ -175,12 +175,12 @@ function employeeName () {
         for (let i = 0; i < res.length; i++) {
             nameArray.push(res[i].first_name +" "+res[i].last_name)
         }
-        updateEmployee(nameArray);
+        employeeChange(nameArray);
     })
 }
 
 
-function updateEmployee(nameArray) {
+function employeeChange(nameArray) {
     inquirer.prompt([
         {
             type: "list",
@@ -188,6 +188,23 @@ function updateEmployee(nameArray) {
             message: "Which Employee would you like to update?",
             choices: nameArray
         },
+    ]).then((data) =>{
+        
+        let empId = 
+        `SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) LIKE '${data.name}'`
+
+        connection.query(empId, function (err, res){
+            if (err) throw err;
+            const numId = parseInt((res[0].id))
+            updateEmployee(numId)
+        })
+
+    
+    })
+};
+
+function updateEmployee (numId) {
+    inquirer.prompt([
         {
             type: "list",
             name: "role",
@@ -195,8 +212,6 @@ function updateEmployee(nameArray) {
             choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Accountant", "Legal Team Lead", "Lawyer"]
         }
     ]).then((data) =>{
-        console.log(data.name);
-        
         let roleid;
 
         switch(data.role) {
@@ -222,23 +237,23 @@ function updateEmployee(nameArray) {
                 roleid = 7;
                 break;
         }
-
-        console.log(roleid);
-        // const query = connection.query(
-        //     "UPDATE employee SET ? WHERE ?",
-        //     [
-        //         {
-        //             role_id: `${roleid}`
-        //         },
-        //         {
-        //             id: `${data.name}`
-        //         }
-        //     ],
-        //     function (err, res) {
-        //         if (err) throw err;
-        //         console.log(res.affectedRows + " updated")
-        //     }
-        // )
-    
+        const query = connection.query(
+            "UPDATE employee SET ? WHERE ?",
+            [
+                {
+                    role_id: `${roleid}`
+                },
+                {
+                    id: `${numId}`
+                }
+            ],
+            function (err, res) {
+                if (err) throw err;
+                console.log(res.affectedRows + " Employee updated")
+                startInquirer();
+            }
+        )
     })
-};
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
