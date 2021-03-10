@@ -27,31 +27,37 @@ connection.connect((err)=>{
 
 /////////////////////////////////////////////////////
 
+
 function startInquirer () {
     inquirer.prompt([
         {
         type: "list",
         name: "prompt",
         message: "What would you like to do?",
-        choices: ["Display All Employees", "Display Employees by Department", "Display Employees by Manager", "Add an Employee", "Update an Employee", "Remove Employee"]
+        choices: ["View All Employees", "View Employees by Department", "View All Departments", "View All Roles", "Add an Employee", "Add a Department", "Add a Role", "Update an Employee", "Remove Employee", "Quit App"]
         },
 
     ]).then((data) => {
-        if (data.prompt === "Display All Employees") {
+        if (data.prompt === "View All Employees") {
             showTeam();
-        } else if (data.prompt === "Display Employees by Department") {
-            showDepartment();
-        } else if (data.prompt === "Display Employees by Manager") {
+        } else if (data.prompt === "View Employees by Department") {
+            employeeByDepartment();
+        } else if (data.prompt === "View All Departments") {
+
+        } else if (data.prompt === "View All Roles") {
 
         } else if (data.prompt === "Add an Employee") {
             createEmployee();
+        } else if (data.prompt === "Add a Department") {
+
+        } else if (data.prompt === "Add a Role") {
 
         } else if (data.prompt === "Update an Employee") {
             employeeName();
         } else if (data.prompt === "Remove Employee") {
         
         } else {
-
+            console.log("Goodbye!")
         }
         
     })
@@ -60,7 +66,11 @@ function startInquirer () {
 
 function showTeam () {
     let sql =  
-    `SELECT employee.id, employee.first_name, employee.last_name, department.department_name, role.title, role.salary FROM employee INNER JOIN role ON employee.role_id = role.role_id INNER JOIN department ON role.department_id = department.department_id`;
+    `SELECT employee.id, employee.first_name, employee.last_name, department.department_name, role.title, role.salary 
+     FROM employee INNER JOIN role 
+     ON employee.role_id = role.role_id 
+     INNER JOIN department 
+     ON role.department_id = department.department_id;`
 
     connection.query(sql, function (err, res){
         if (err) throw err;
@@ -70,7 +80,7 @@ function showTeam () {
     })
 };
 
-function showDepartment () {
+function employeeByDepartment () {
     inquirer.prompt([
         {
             type: "list",
@@ -81,7 +91,13 @@ function showDepartment () {
         ]).then((response) => {
             const department = response.department;
             let sql = 
-            `SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary FROM employee INNER JOIN role ON employee.role_id = role.role_id INNER JOIN department ON role.department_id = department.department_id WHERE department_name = "${department}"`;
+            `SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary 
+             FROM employee 
+             INNER JOIN role 
+             ON employee.role_id = role.role_id 
+             INNER JOIN department 
+             ON role.department_id = department.department_id 
+             WHERE department_name = "${department}"`;
 
             connection.query(sql, function (err, res){
                 if (err) throw err;
@@ -163,6 +179,8 @@ function createEmployee() {
     })
 };
 
+//////////////////////////////////////////////////////////////////////////////////////
+//  UPDATES EMPLOYEE ROLE 
 //////////////////////////////////////////////////////////////////////////////////////
 function employeeName () {
     let sql =  
