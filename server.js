@@ -3,9 +3,6 @@ const mysql = require('mysql');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 
-
-
-
 //parameters for connection
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -43,9 +40,9 @@ function startInquirer () {
         } else if (data.prompt === "View Employees by Department") {
             employeeByDepartment();
         } else if (data.prompt === "View All Departments") {
-
+            showDepartments();
         } else if (data.prompt === "View All Roles") {
-
+            showRoles();
         } else if (data.prompt === "Add an Employee") {
             createEmployee();
         } else if (data.prompt === "Add a Department") {
@@ -55,7 +52,7 @@ function startInquirer () {
         } else if (data.prompt === "Update an Employee") {
             employeeName();
         } else if (data.prompt === "Remove Employee") {
-        
+            employeeRemove();
         } else {
             console.log("Goodbye!")
         }
@@ -108,6 +105,32 @@ function employeeByDepartment () {
     })
 };
 
+function showDepartments() {
+    let sql =  
+    `SELECT department_name 'Departments'
+     FROM department;`
+
+    connection.query(sql, function (err, res){
+        if (err) throw err;
+        // console.log(res);
+        console.table('  ', res);
+        startInquirer();
+    })
+};
+
+function showRoles() {
+    let sql =  
+    `SELECT title 'Job titles'
+     FROM role;`
+
+    connection.query(sql, function (err, res){
+        if (err) throw err;
+        // console.log(res);
+        console.table('  ', res);
+        startInquirer();
+    })
+};
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -131,7 +154,7 @@ function createEmployee() {
         {
             type: "list",
             name: "role",
-            message: "Which department will the employee work in",
+            message: "What is the employees role with the company?",
             choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Accountant", "Legal Team Lead", "Lawyer"]
         },
     ]).then((data) => {
@@ -180,8 +203,8 @@ function createEmployee() {
 };
 
 //////////////////////////////////////////////////////////////////////////////////////
-//  UPDATES EMPLOYEE ROLE 
-//////////////////////////////////////////////////////////////////////////////////////
+///                         UPDATES EMPLOYEE ROLE                                 ///
+////////////////////////////////////////////////////////////////////////////////////
 function employeeName () {
     let sql =  
     `SELECT id, first_name, last_name FROM employee`;
@@ -267,7 +290,7 @@ function updateEmployee (numId) {
             ],
             function (err, res) {
                 if (err) throw err;
-                console.log(res.affectedRows + " Employee updated")
+                console.log("Employee updated")
                 startInquirer();
             }
         )
@@ -275,3 +298,56 @@ function updateEmployee (numId) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
+///                         Removes Employee                                      ///
+////////////////////////////////////////////////////////////////////////////////////
+function employeeRemove () {
+    let sql =  
+    `SELECT id, first_name, last_name FROM employee`;
+
+    connection.query(sql, function (err, res){
+        if (err) throw err;
+        // console.log(res);        
+        const nameArray = [];
+        for (let i = 0; i < res.length; i++) {
+            nameArray.push(res[i].first_name +" "+res[i].last_name)
+        }
+        employeeDelete(nameArray);
+    })
+}
+
+function employeeDelete(nameArray) {
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "name",
+            message: "Which Employee would you like to remove?",
+            choices: nameArray
+        },
+    ]).then((data) =>{
+        
+        let empId = 
+        `SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) LIKE '${data.name}'`
+
+        connection.query(empId, function (err, res){
+            if (err) throw err;
+            const numId = parseInt((res[0].id))
+            deleteEmployee(numId)
+        })
+
+    
+    })
+};
+
+function deleteEmployee(numId) {
+    connection.query(
+        "DELETE FROM employee WHERE ?",
+        {
+            id: `${numId}`
+        },
+        function (err, res) {
+            if (err) throw (err);
+            console.log("Employee removed");
+            startInquirer();
+        }
+    )
+}
