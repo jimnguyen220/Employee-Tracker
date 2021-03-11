@@ -46,9 +46,9 @@ function startInquirer () {
         } else if (data.prompt === "Add an Employee") {
             createEmployee();
         } else if (data.prompt === "Add a Department") {
-
+            addDepartment();
         } else if (data.prompt === "Add a Role") {
-
+            addRole();
         } else if (data.prompt === "Update an Employee") {
             employeeName();
         } else if (data.prompt === "Remove Employee") {
@@ -133,6 +133,73 @@ function showRoles() {
 
 
 //////////////////////////////////////////////////////////////////////////////////////
+
+function addDepartment (){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "department",
+            message: "What is the name of the department you would like to add?"
+        },
+    ]).then((data)=>{
+        const query = connection.query(
+            "INSERT INTO department SET ?",
+            {   
+                department_name: `${data.department}`,
+            },
+            function (err, res) {
+                if (err) throw err;
+                console.log(res.affectedRows + " Department Added!");
+                startInquirer();
+            }
+        )  
+    })
+}
+///////////////////////////////////////////////////////////////////////////
+function employeeName () {
+    let sql =  
+    `SELECT id, department_name FROM department`;
+
+    connection.query(sql, function (err, res){
+        if (err) throw err;
+        // console.log(res);        
+        const deptArray = [];
+        for (let i = 0; i < res.length; i++) {
+            deptArray.push(res[i])
+        }
+        addRole(deptArray);
+    })
+}
+function addRole (deptArray) {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "role",
+            message: "What role would you like to create?"
+        },
+        {
+            type: "list",
+            name: "department",
+            message: "Wich department is it under?",
+            choices: deptArray
+        },
+    ]).then((data)=>{
+
+        let deptid = data.department;
+        // unfinished code starts here - taking a break //
+        const query = connection.query(
+            "INSERT INTO role SET ?",
+            {   
+                title: `${data.role}`,
+            },
+            function (err, res) {
+                if (err) throw err;
+                console.log(res.affectedRows + " Role Added!");
+                startInquirer();
+            }
+        )  
+    })
+}
 
 function createEmployee() {
     inquirer.prompt([

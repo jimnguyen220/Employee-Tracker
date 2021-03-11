@@ -4,7 +4,7 @@ CREATE DATABASE employee_db;
 USE employee_db;
 
 CREATE TABLE department (
-	department_id INT,
+	department_id INT AUTO_INCREMENT,
     department_name VARCHAR(30),
     PRIMARY KEY(department_id)
 );
@@ -23,5 +23,5 @@ CREATE TABLE employee (
     last_name VARCHAR(30) NOT NULL,
     role_id INT NOT NULL,
     manager_id INT,
-    PRIMARY KEY(employee_id)
+    PRIMARY KEY(id)
 );
