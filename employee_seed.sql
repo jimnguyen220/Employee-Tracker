@@ -43,14 +43,14 @@ VALUES ("6", "Legal Team Lead", "200000.00", "4");
 INSERT INTO role (role_id, title, salary, department_id)
 VALUES ("7", "Lawyer", "150000.00", "4");
 
-INSERT INTO department (department_id, department_name)
-VALUES ("1", "Sales");
+INSERT INTO department (department_name)
+VALUES ("Sales");
 
-INSERT INTO department (department_id, department_name)
-VALUES ("2", "Engineering");
+INSERT INTO department (department_name)
+VALUES ("Engineering");
 
-INSERT INTO department (department_id, department_name)
-VALUES ("3", "Finance");
+INSERT INTO department (department_name)
+VALUES ("Finance");
 
-INSERT INTO department (department_id, department_name)
-VALUES ("4", "Legal");
+INSERT INTO department (department_name)
+VALUES ("Legal");
