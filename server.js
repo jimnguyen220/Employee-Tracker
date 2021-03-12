@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 //create connection
 connection.connect((err)=>{
     if (err) throw err;
-    console.log("Connected!");
+    console.log("Welcome to the Employee Tracker!");
     //add functions here that happen when connected
     startInquirer();
 

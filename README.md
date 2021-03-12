@@ -1,6 +1,11 @@
 # Employee-Tracker
 
-Build a command-line application that at a minimum allows the user to:
+## Description 
+
+Developers are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. Often these interfaces are known as **C**ontent **M**anagement **S**ystems. The goal of this project is to architect and build a solution for managing a company's employees using node, inquirer, and MySQL.
+
+## Objective
+
 
   * Add departments, roles, employees
 
@@ -8,12 +13,17 @@ Build a command-line application that at a minimum allows the user to:
 
   * Update employee roles
 
-  Bonus points if you're able to:
+  * Remove Employees
 
-  * Update employee managers
+![employee tracker](./assets/employeeTracker.gif)
 
-  * View employees by manager
+## Installation
 
-  * Delete departments, roles, and employees
+  npm install
 
-  * View the total utilized budget of a department -- ie the combined salaries of all employees in that department
+## Usage
+
+To run the application, type in the following command line:
+
+  npm start
+
