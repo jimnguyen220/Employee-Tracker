@@ -76,35 +76,6 @@ function showTeam () {
     })
 };
 
-//removed this as an option as this is not a requirement for app//
-function employeeByDepartment () {
-    inquirer.prompt([
-        {
-            type: "list",
-            name: "department",
-            message: "What department would you like to see?",
-            choices: ["Sales", "Engineering", "Finance", "Legal"]
-        }
-        ]).then((response) => {
-            const department = response.department;
-            let sql = 
-            `SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary 
-             FROM employee 
-             INNER JOIN role 
-             ON employee.role_id = role.role_id 
-             INNER JOIN department 
-             ON role.department_id = department.department_id 
-             WHERE department_name = "${department}"`;
-
-            connection.query(sql, function (err, res){
-                if (err) throw err;
-                // console.log(res);
-                console.table(`${department} Team Employees`, res);
-                startInquirer();
-        })
-    })
-};
-//////////////////////////////////////////////////////////////////
 function showDepartments() {
     let sql =  
     `SELECT department_name 'Departments'

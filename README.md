@@ -17,13 +17,19 @@ Developers are often tasked with creating interfaces that make it easy for non-d
 
 ![employee tracker](./assets/employeeTracker.gif)
 
+## Link to Demo
+
+  [Youtube Link](https://youtu.be/GMBdOHThr7w)
+
 ## Installation
 
-  npm install
+To install the necessary dependencies, type in the following command line:
+
+    npm install
 
 ## Usage
 
 To run the application, type in the following command line:
 
-  npm start
+    npm start
 
